@@ -10,13 +10,20 @@
         
         
         <Grid>
-                <ComboBox Name="DiskSelector" Height="40" Width="150" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20">
-                </ComboBox>
+                <StackPanel>
+                        <Grid Background="LightGray" Height="35">
+                                <ComboBox Name="DiskSelector" Height="35" Width="150" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20"></ComboBox>
+                                <Button  Name= "Scanner" VerticalAlignment= "Top" HorizontalAlignment = "Right" Content = "Scan"  FontSize="20" Height="38" Width="90" Click="Scanner_OnClick"></Button>
+                        </Grid>
+                        
+                         <Grid Background="SlateGray" Height="40">
+                                <TextBlock VerticalAlignment ="Center" Margin="150, 0, 0, 0" FontSize = "16" HorizontalAlignment = "Left" Text="Drive"></TextBlock>  
+                                <TextBlock VerticalAlignment ="Center" Margin="0, 0, 150, 0" FontSize = "16" HorizontalAlignment = "Right" Text="Size"></TextBlock>    
+                        </Grid>
+                </StackPanel>
                 
-                <Button  Name= "Scanner" VerticalAlignment= "Top" Content = "Scan"  FontSize="20" Height="40" Width="90" Click="Scanner_OnClick"></Button>
-
-                <TreeView x:Name="FolderView" VerticalAlignment="Top" Margin="0 ,39, 0, 0">
-                        <TreeView.Resources>
+                <TreeView x:Name="DataView" VerticalAlignment="Top" Margin="0, 75, 0, 0">
+                                        <TreeView.Resources>
                                 <Style TargetType="{x:Type local:DiskTreeViewItem}">
                                         <Setter Property="HeaderTemplate">
                                             <Setter.Value>
@@ -25,18 +32,17 @@
                                                                     <Image Width = "30" Margin="3" 
                                                                            Source="{Binding RelativeSource={RelativeSource
                                                                     Mode=FindAncestor, AncestorType={x:Type local:DiskTreeViewItem}}, Path=DataPath, Converter={x:Static local:HeaderToImageConvertor.Instance}}"/>
-                                                                    <TextBlock VerticalAlignment = "Center" FontSize="15" 
-                                                                               Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:DiskTreeViewItem}}, Path=FileFolderName}"/>
-                                                                    <TextBlock VerticalAlignment= "Center" FontSize="15" 
+                                                                    <TextBlock VerticalAlignment = "Center" FontSize="15" Width="400" 
+                                                                               Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:DiskTreeViewItem}}, Path=DataName}"/>
+                                                                    <TextBlock VerticalAlignment= "Center" Margin="10, 0 , 0, 0" FontSize="15" HorizontalAlignment="Right"
                                                                                Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:DiskTreeViewItem}}, Path=SizeOfFolder}"/>
                                                             </StackPanel>
                                                     </DataTemplate>
                                             </Setter.Value>    
                                         </Setter>
                                 </Style>
-                                
-                        </TreeView.Resources>
-                </TreeView>
+                                        </TreeView.Resources>
+                        </TreeView> 
         </Grid>
         
 </Window>
