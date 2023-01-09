@@ -24,7 +24,7 @@ public class HeaderToImageConvertor : IValueConverter
             return null;
         }
 
-        var name = MainWindow.GetFileFolderName(path);
+        var name = DiskTreeViewItem.GetDataName(path);
         
         var image = "Images/file.png";
 
