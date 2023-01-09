@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -23,21 +21,29 @@ namespace Task10
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            foreach (var drive in Directory.GetLogicalDrives())
+            foreach (DriveInfo drive in DriveInfo.GetDrives())
             {
                 DiskSelector.Items.Add(drive);
             }
         }
 
-        private async void Folder_Expanded(object sender, RoutedEventArgs e)
+        private void Folder_Expanded(object sender, RoutedEventArgs e)
         {
-            await Task.Run(() => {
-            Dispatcher.Invoke(() =>
-                { 
-            var item = (DiskTreeViewItem)sender;
-                    
-            Trace.WriteLine(item.DataPath);
 
+            if (sender == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+
+            if (sender.GetType() != typeof(DiskTreeViewItem))
+            {
+                throw new ArgumentException();
+            }
+            
+            
+            var item = (DiskTreeViewItem)sender;
+            
             if (item.Items.Count != 1 || item.Items[0] != null)
             {
                 return;
@@ -66,13 +72,12 @@ namespace Task10
             
             directories.ForEach(directoryPath =>
             {
-                var subItem = new DiskTreeViewItem(directoryPath, GetFileFolderName(directoryPath) , item);
+                var subItem = new DiskTreeViewItem(directoryPath);
+
+                subItem.Expanded += Folder_Expanded;
 
                 subItem.Items.Add(null);
-               item.Items.Add(subItem);
-
-               Folder_Expanded(subItem, new RoutedEventArgs());
-
+                item.Items.Add(subItem);
             });
 
             var files = new List<string>();
@@ -93,63 +98,65 @@ namespace Task10
 
             files.ForEach(filePath =>
             {
-                var subItem = new DiskTreeViewItem(filePath, GetFileFolderName(filePath) , item);
+                var subItem = new DiskTreeViewItem(filePath);
                 item.Items.Add(subItem);
             });
-            });
-            });
         }
 
-
-
-        public static string GetFileFolderName(string path)
-        {
-            //Get last part of the backslash
-            if (string.IsNullOrEmpty(path))
-            {
-                return string.Empty;
-            }
-
-            var normalizedPath = path.Replace('/', '\\');
-
-            var lastIndex = normalizedPath.LastIndexOf('\\');
-
-            if (lastIndex <= 0)
-            {
-                return path;
-            }
-
-
-            return path.Substring(lastIndex + 1);
-
-        }
+        
 
         private void Scanner_OnClick(object sender, RoutedEventArgs e)
         {
-            var scannerButton = (Button)sender;
+            if (sender == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (sender.GetType() != typeof(Button))
+            {
+                throw new ArgumentException();
+            }
             
             if (DiskSelector.Text == String.Empty)
             {
-                string warningMessageText = "No drive selected for scanning";
-                string caption = "Drive not found";
-                MessageBoxButton button = MessageBoxButton.OK;
-                MessageBoxImage icon = MessageBoxImage.Warning;
-
-                MessageBoxResult result = MessageBox.Show(warningMessageText, caption, button, icon);
-
+                CreateWarningButton();
             }
 
             else
             {
-                var item = new DiskTreeViewItem(DiskSelector.Text, DiskSelector.Text);
+                foreach (var drive in DataView.Items.OfType<DiskTreeViewItem>())
+                {
+                    if (drive.DataName == DiskSelector.Text)
+                    {
+                        DataView.Items.RemoveAt(DataView.Items.IndexOf(drive));
+                        break;
+                    }
+                }
+
+                var item = new DiskTreeViewItem(DiskSelector.Text);
+
+                item.Expanded += Folder_Expanded;
+
 
                 item.Items.Add(null);
                 
-                FolderView.Items.Add(item);
+                DataView.Items.Add(item);
 
-                Folder_Expanded(item, new RoutedEventArgs());
-//asd
+                item.IsExpanded = true;
+
             }
+        }
+
+
+
+        private void CreateWarningButton()
+        {
+            string warningMessageText = "No drive selected for scanning";
+            string caption = "Drive not found";
+            MessageBoxButton button = MessageBoxButton.OK;
+            MessageBoxImage icon = MessageBoxImage.Warning;
+
+            MessageBox.Show(warningMessageText, caption, button, icon);
         }
     }
 }
