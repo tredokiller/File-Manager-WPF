@@ -4,7 +4,7 @@ using System.IO;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
-namespace Task10;
+namespace Task10.Models;
 
 
 [ValueConversion(typeof(string), typeof(BitmapImage))]
@@ -14,7 +14,7 @@ public class HeaderToImageConvertor : IValueConverter
 
     public static HeaderToImageConvertor Instance = new HeaderToImageConvertor();
     
-    public object  Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         
         var path = (string)value;
