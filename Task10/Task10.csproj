@@ -22,4 +22,16 @@
       <Resource Include="Images\folder-open.png" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Page Update="Views\MainWindow.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0-preview3" />
+    </ItemGroup>
+
 </Project>
