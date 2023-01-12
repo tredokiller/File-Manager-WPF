@@ -1,19 +1,22 @@
-﻿<Window x:Class="Task10.MainWindow" ResizeMode="NoResize"
+﻿<Window x:Class="Task10.Views.MainWindow" ResizeMode="NoResize"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Task10"
+         
+        d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
+        
+        xmlns:vm="clr-namespace:Task10.ViewModels"
+        xmlns:models="clr-namespace:Task10.Models"
         Loaded="MainWindow_OnLoaded"
         mc:Ignorable="d"
         Title="TreeSize" Height="450" Width="700">
-        
         
         <Grid>
                 <StackPanel>
                         <Grid Background="LightGray" Height="35">
                                 <ComboBox Name="DiskSelector" Height="35" Width="150" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20"></ComboBox>
-                                <Button  Name= "Scanner" VerticalAlignment= "Top" HorizontalAlignment = "Right" Content = "Scan"  FontSize="20" Height="38" Width="90" Click="Scanner_OnClick"></Button>
+                                <Button VerticalAlignment= "Top" HorizontalAlignment = "Right" Content = "Scan"  FontSize="20" Height="38" Width="90" Command="{Binding ScannerButtonOnClickCommand}"></Button>
                         </Grid>
                         
                          <Grid Background="SlateGray" Height="40">
@@ -22,20 +25,20 @@
                         </Grid>
                 </StackPanel>
                 
-                <TreeView x:Name="DataView" VerticalAlignment="Top" Margin="0, 75, 0, 0">
-                                        <TreeView.Resources>
-                                <Style TargetType="{x:Type local:DiskTreeViewItem}">
+                <TreeView x:Name="DataView" VerticalAlignment="Top" Margin="0, 75, 0, 0" >
+                        <TreeView.Resources>
+                                <Style TargetType="{x:Type models:DiskTreeViewItem}">
                                         <Setter Property="HeaderTemplate">
                                             <Setter.Value>
                                                     <DataTemplate>
                                                             <StackPanel Orientation="Horizontal">
                                                                     <Image Width = "30" Margin="3" 
                                                                            Source="{Binding RelativeSource={RelativeSource
-                                                                    Mode=FindAncestor, AncestorType={x:Type local:DiskTreeViewItem}}, Path=DataPath, Converter={x:Static local:HeaderToImageConvertor.Instance}}"/>
+                                                                    Mode=FindAncestor, AncestorType={x:Type models:DiskTreeViewItem}}, Path=DataPath, Converter={x:Static models:HeaderToImageConvertor.Instance}}"/>
                                                                     <TextBlock VerticalAlignment = "Center" FontSize="15" Width="400" 
-                                                                               Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:DiskTreeViewItem}}, Path=DataName}"/>
+                                                                               Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type models:DiskTreeViewItem}}, Path=DataName}"/>
                                                                     <TextBlock VerticalAlignment= "Center" Margin="10, 0 , 0, 0" FontSize="15" HorizontalAlignment="Right"
-                                                                               Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:DiskTreeViewItem}}, Path=SizeOfFolder}"/>
+                                                                               Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type models:DiskTreeViewItem}}, Path=SizeOfFolder}"/>
                                                             </StackPanel>
                                                     </DataTemplate>
                                             </Setter.Value>    
