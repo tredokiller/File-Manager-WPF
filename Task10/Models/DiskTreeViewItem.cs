@@ -26,16 +26,17 @@ public class DiskTreeViewItem : TreeViewItem , INotifyPropertyChanged
     
     public string DataName { get; }
     
+    
     private readonly bool _isDrive;
+    
+    private static string[] _sizeSyms = {"B" , "KB" , "MB" , "GB" , "TB"};
+    
     
     
     private string _sizeOfFolder;
 
     private long _sizeOfFolderLong;
-  
-
-
-    private static string[] _sizeSyms = {"B" , "KB" , "MB" , "GB" , "TB"};
+    
 
 
 
