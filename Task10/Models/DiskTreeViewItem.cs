@@ -42,6 +42,7 @@ public class DiskTreeViewItem : TreeViewItem , INotifyPropertyChanged
 
     public DiskTreeViewItem(string path)
     {
+        
         DataPath = path ?? throw new ArgumentNullException(nameof(path));
         DataName = GetDataName(DataPath);
         
@@ -58,9 +59,13 @@ public class DiskTreeViewItem : TreeViewItem , INotifyPropertyChanged
     }
 
 
-    public static string GetDataName(string path)
+    public static string GetDataName(string path)  //Get last part of the backslash
     {
-        //Get last part of the backslash
+        if (path == null)
+        {
+           throw new ArgumentNullException(nameof(path));
+        }
+        
         if (string.IsNullOrEmpty(path))
         {
             return string.Empty;

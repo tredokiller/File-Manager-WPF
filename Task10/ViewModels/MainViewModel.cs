@@ -21,8 +21,8 @@ public class MainViewModel
     
     public MainViewModel(ref ComboBox diskSelector, ref TreeView dataView)
     {
-        _diskSelector = diskSelector;
-        _dataView = dataView;
+        _diskSelector = diskSelector ?? throw new ArgumentNullException(nameof(diskSelector));
+        _dataView = dataView ?? throw new ArgumentNullException(nameof(dataView));
         
         ScannerButtonOnClickCommand = new RelayCommand(ScannerButtonOnClick);
     }

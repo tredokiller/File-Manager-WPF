@@ -21,8 +21,9 @@ public class HeaderToImageConvertor : IValueConverter
 
         if (path == null)
         {
-            return null;
+            throw new ArgumentNullException(nameof(path));
         }
+        
 
         var name = DiskTreeViewItem.GetDataName(path);
         
