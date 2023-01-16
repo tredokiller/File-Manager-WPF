@@ -87,7 +87,7 @@ public class DiskTreeViewItemTests
     [Test]
     public async Task CalculateDiskSizeTest()
     {
-        var drive = DriveInfo.GetDrives()[1];
+        var drive = DriveInfo.GetDrives()[0];
         
         double trueSize = drive.TotalSize - drive.AvailableFreeSpace;
         double trueSizeString = trueSize / 1024 / 1024 / 1024;
