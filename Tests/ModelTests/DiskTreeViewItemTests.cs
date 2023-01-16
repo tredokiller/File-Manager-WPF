@@ -15,6 +15,57 @@ public class DiskTreeViewItemTests
 
 
     [Test]
+    public void ConstructorTrueValuesTest()
+    {
+        string truePath = "E:\\Project\\Doodle";
+        string trueName = "Doodle";
+        DiskTreeViewItem diskItem = new DiskTreeViewItem(truePath);
+        Assert.AreEqual(truePath, diskItem.DataPath);
+        Assert.AreEqual(trueName, diskItem.DataName);
+        
+        
+    }
+
+    [Test]
+    public void DataPathGetTest()
+    {
+        string truePath = "E:\\Project\\Doodle";
+        
+        
+        DiskTreeViewItem diskItem = new DiskTreeViewItem(truePath);
+        
+        string testedPath = diskItem.DataPath;
+        
+        Assert.AreEqual(truePath, diskItem.DataPath);
+    }
+    
+    
+    [Test]
+    public void DataNameGetTest()
+    {
+        string truePath = "E:\\Project\\Doodle";
+        string trueName = "Doodle";
+        
+        
+        DiskTreeViewItem diskItem = new DiskTreeViewItem(truePath);
+        
+        string testedPath = diskItem.DataPath;
+        
+        Assert.AreEqual(trueName, diskItem.DataName);
+    }
+    
+    
+    [Test]
+    public void ConstructorStringEmptyValueTest()
+    {
+        string testPath = "C:\\";
+        DiskTreeViewItem diskItem = new DiskTreeViewItem(testPath);
+        Assert.AreEqual(testPath, diskItem.DataName);
+
+    }
+    
+
+    [Test]
     public void GetDataNameNullExceptionTest()
     {
         Assert.Throws(typeof(ArgumentNullException), () => DiskTreeViewItem.GetDataName(null));
@@ -29,5 +80,27 @@ public class DiskTreeViewItemTests
         var result = DiskTreeViewItem.GetDataName(testValue);
 
         Assert.AreEqual(trueResult, result);
+    }
+
+
+
+    [Test]
+    public async Task CalculateDiskSizeTest()
+    {
+        var drive = DriveInfo.GetDrives()[1];
+        
+        double trueSize = drive.TotalSize - drive.AvailableFreeSpace;
+        double trueSizeString = trueSize / 1024 / 1024 / 1024;
+
+        var t = new Thread(o =>
+        {
+            DiskTreeViewItem diskItem = new DiskTreeViewItem(drive.ToString());
+            Assert.AreEqual(Math.Round(trueSizeString, 2) + "GB", diskItem.SizeOfFolder);
+            
+        });
+        t.SetApartmentState(ApartmentState.STA);
+        t.Start();
+
+
     }
 }

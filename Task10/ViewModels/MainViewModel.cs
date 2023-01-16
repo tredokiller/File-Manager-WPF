@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using Task10.Models;
+using Task10.Services;
 
 namespace Task10.ViewModels;
 
@@ -16,14 +17,25 @@ public class MainViewModel
     private readonly TreeView _dataView;
     
     public ICommand ScannerButtonOnClickCommand { get; }
+
+
+    private IMessageBoxService _warningMessageService;
     
     
     
-    public MainViewModel(ref ComboBox diskSelector, ref TreeView dataView)
+    public MainViewModel(ComboBox diskSelector, TreeView dataView, IMessageBoxService warningMessageService = null)
     {
         _diskSelector = diskSelector ?? throw new ArgumentNullException(nameof(diskSelector));
         _dataView = dataView ?? throw new ArgumentNullException(nameof(dataView));
+
+        _warningMessageService = warningMessageService;
         
+        if (_warningMessageService == null)
+        {
+            _warningMessageService = new WarningMessageModel();
+        }
+        
+
         ScannerButtonOnClickCommand = new RelayCommand(ScannerButtonOnClick);
     }
     
@@ -31,7 +43,7 @@ public class MainViewModel
     {
         if (_diskSelector.Text == String.Empty)
         {
-            CreateWarningButton();
+            _warningMessageService.CreateMessageBox();
         }
 
         else
@@ -133,14 +145,4 @@ public class MainViewModel
            item.Items.Add(subItem);
        });
    }
-    
-    private void CreateWarningButton()
-    {
-        string warningMessageText = "No drive selected for scanning";
-        string caption = "Drive not found";
-        MessageBoxButton button = MessageBoxButton.OK;
-        MessageBoxImage icon = MessageBoxImage.Warning;
-
-        MessageBox.Show(warningMessageText, caption, button, icon);
-    }
 }

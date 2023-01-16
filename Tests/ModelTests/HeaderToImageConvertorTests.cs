@@ -7,15 +7,7 @@ namespace ModelTests;
 
 public class HeaderToImageConvertorTests
 {
-
-
-    private string _filePath = "Test.txt";
-    private string _fullFilePath = "";
     
-    [SetUp]
-    public void Default()
-    {
-    }
 
     [Test]
     public void ConvertNullExceptionTest()
@@ -30,14 +22,34 @@ public class HeaderToImageConvertorTests
 
         Assert.Throws(typeof(ArgumentNullException), () => convertor.Convert(null, type, null, cultInfo));
     }
-    
 
-    [TearDown]
-    public void Exit()
+
+    [Test]
+    public void ConvertBackExceptionTest()
     {
+        var convertor = new HeaderToImageConvertor();
+
+
+        Assert.Throws(typeof(NotImplementedException), () => convertor.ConvertBack(null, null, null, null));
     }
-    
-    
+
+
+    [Test]
+    public void GetInstanceTest()
+    { 
+        var convertor = new HeaderToImageConvertor();
+
+        var instance = HeaderToImageConvertor.Instance;
+        
+        Assert.AreEqual(typeof(HeaderToImageConvertor), instance.GetType());
+    }
+
+
+    [Test]
+    public void ConstructorTest()
+    {
+        var convertor = new HeaderToImageConvertor();
+    }
     
     
 }

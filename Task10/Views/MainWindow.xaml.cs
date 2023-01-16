@@ -9,7 +9,7 @@ namespace Task10.Views
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainViewModel(ref DiskSelector , ref DataView);
+            DataContext = new MainViewModel(DiskSelector , DataView);
         }
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
