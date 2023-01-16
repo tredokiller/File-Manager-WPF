@@ -85,7 +85,7 @@ public class DiskTreeViewItemTests
 
 
     [Test]
-    public async Task CalculateDiskSizeTest()
+    public void CalculateDiskSizeTest()
     {
         var drive = DriveInfo.GetDrives()[0];
         
